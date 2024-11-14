@@ -47,9 +47,24 @@ fetch("houses.json")
 
 
 
-function fetchRandomColor() {
+function fetchRanColor() {
     // https://api.allorigins.win/raw?url=
-    const url = "https://www.colr.org/json/color/latest";
+    const url = "https://www.colr.org/json/color/random";
+    fetch(url) 
+        .then((response) => {
+            if (!response.ok) { // if response isn't ok throw error
+                throw new Error("Error fetching random color");
+            }
+            return response.text(); // otherwise return the response as a json
+        })
+        .then ((data) => {
+            console.log(data);
+        })
+
+}
+
+function fetchFixedColor() {
+    const url = "https://api.allorigins.win/raw?url=https://www.colr.org/json/color/random";
     fetch(url) 
         .then((response) => {
             if (!response.ok) { // if response isn't ok throw error
@@ -64,4 +79,6 @@ function fetchRandomColor() {
 }
 
 
-fetchRandomColor();
+//fetchRanColor();
+
+fetchFixedColor();
