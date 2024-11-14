@@ -79,6 +79,6 @@ function fetchFixedColor() {
 }
 
 
-//fetchRanColor();
+fetchRanColor();
 
 fetchFixedColor();
