@@ -48,7 +48,8 @@ fetch("houses.json")
 
 
 function fetchRandomColor() {
-    const url = "https://api.allorigins.win/raw?url=https://www.colr.org/json/color/latest";
+    // https://api.allorigins.win/raw?url=
+    const url = "https://www.colr.org/json/color/latest";
     fetch(url) 
         .then((response) => {
             if (!response.ok) { // if response isn't ok throw error
