@@ -45,40 +45,59 @@ fetch("houses.json")
     .catch((err) => console.log("Oops!", err));
     //this only runs if there is an error during the above process
 
-
-
-function fetchRanColor() {
-    // https://api.allorigins.win/raw?url=
-    const url = "https://www.colr.org/json/color/random";
-    fetch(url) 
-        .then((response) => {
-            if (!response.ok) { // if response isn't ok throw error
-                throw new Error("Error fetching random color");
+// NON async function
+function fetchColor(red, green, blue) {
+    fetch(`https://www.thecolorapi.com/scheme?rgb=${red},${green},${blue}
+        &format=json&mode=analogic&count=10`)
+    
+        .then((response) => { // gets the response and passes it into the arrow function
+             if(!response.ok) {
+                throw new Error(`Error: ${response.status}`);
             }
-            return response.text(); // otherwise return the response as a json
+            return response.json(); // return response as a json (if possible)
         })
         .then ((data) => {
-            console.log(data);
-        })
-
+            let ranNum = Math.floor(Math.random() * (9));
+            //console.log(data);
+            //console.log(data.colors[ranNum]);
+            let colorValue = data.colors[ranNum].hex.value;
+            document.body.style.backgroundColor = colorValue;
+        });
 }
 
-function fetchFixedColor() {
-    const url = "https://api.allorigins.win/raw?url=https://www.colr.org/json/color/random";
-    fetch(url) 
-        .then((response) => {
-            if (!response.ok) { // if response isn't ok throw error
-                throw new Error("Error fetching random color");
-            }
-            return response.text(); // otherwise return the response as a json
-        })
-        .then ((data) => {
-            console.log(data);
-        })
-
+// Helper function for non async function
+function generateRandomBackgroundColor() {
+    let color = {
+        red:  Math.floor(Math.random() * (256)),
+        blue: Math.floor(Math.random() * (256)),
+        green: Math.floor(Math.random() * (256))
+    }
+    fetchColor(color.red, color.blue, color.green);  
 }
 
 
-fetchRanColor();
 
-fetchFixedColor();
+
+// async fetch function
+async function asyncFetchColor() {
+    let color = {
+        red:  Math.floor(Math.random() * (256)),
+        blue: Math.floor(Math.random() * (256)),
+        green: Math.floor(Math.random() * (256))
+    }
+    try {
+        const response = await fetch(`https://www.thecolorapi.com/scheme?rgb=
+            ${color.red},${color.green},${color.blue}&format=json
+            &mode=analogic&count=10`);
+        const data = await response.json();
+        let ranNum = Math.floor(Math.random() * (9));
+        let colorValue = data.colors[ranNum].hex.value;
+        document.body.style.backgroundColor = colorValue;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+asyncFetchColor();
+
+//generateRandomBackgroundColor();
